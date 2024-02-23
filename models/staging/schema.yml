@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: staging
-  - database: taxi-de-pr
+    database: taxi-de-pr
     schema: taxi_week4
 
     tables:
