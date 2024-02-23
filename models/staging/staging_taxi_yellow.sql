@@ -1,12 +1,5 @@
 {{ config(materialized='view') }}
- 
-with tripdata as 
-(
-  select *,
-    row_number() over(partition by vendorid, tpep_pickup_datetime) as rn
-  from {{ source('staging','taxi_yellow') }}
-  where vendorid is not null 
-)
+
 select
    -- identifiers
     {{ dbt_utils.generate_surrogate_key(['vendorid', 'tpep_pickup_datetime']) }} as tripid,    
@@ -37,10 +30,10 @@ select
     cast(total_amount as numeric) as total_amount,
     coalesce({{ dbt.safe_cast("payment_type", api.Column.translate_type("integer")) }},0) as payment_type,
     {{ get_payment_type_description('payment_type') }} as payment_type_description
-from tripdata
-where rn = 1
 
--- dbt build --select <model.sql> --vars '{'is_test_run: false}'
+from {{ source('staging','new_yellow_tripdata') }}
+where vendorid is not null
+-- dbt build --m <model.sql> --var 'is_test_run: false'
 {% if var('is_test_run', default=true) %}
 
   limit 100

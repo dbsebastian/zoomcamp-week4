@@ -6,5 +6,5 @@ sources:
     schema: taxi_week4
 
     tables:
-      - name: taxi_yellow
-      - name: taxi_green
+      - name: new_yellow_tripdata
+      - name: new_green_tripdata
