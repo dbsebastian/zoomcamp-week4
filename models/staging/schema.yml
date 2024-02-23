@@ -7,3 +7,4 @@ sources:
 
     tables:
       - name: taxi_yellow
+      - name: taxi_green
